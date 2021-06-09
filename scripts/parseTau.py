@@ -91,8 +91,8 @@ def main():
     mer = args.mer
     overlap = args.overlap
     out = args.out
-    posDict, Seq = parseFasta('data/tauMain.fasta')
-    posDict=parsePTMs(posDict=posDict, ptm='data/PTMList_DANIEL.txt')
+    posDict, Seq = parseFasta(fasta)
+    posDict=parsePTMs(posDict=posDict, ptm=ptm)
     makePeptides(posDict, mer, overlap, out, Seq)
 
 if __name__ == '__main__':main()
