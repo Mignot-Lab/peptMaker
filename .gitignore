@@ -2,3 +2,5 @@
 *.pptx
 data/YKPDVDLSK.csv
 data/tauIsoforms.fasta
+scripts/DanielDarling_TauPTM11aa.py
+scripts/parseDaniels.py
