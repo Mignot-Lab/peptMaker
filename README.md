@@ -9,10 +9,12 @@ A typical usage would be with following arguments.
 -out a string to write the output csv.
 
 A example usage would be 
-```python3 parseTau.py \
+```
+python3 parseTau.py \
 -fasta data/tauMain.fasta \
 -ptm data/PTMList_DANIEL.txt \
 -mer 11 \
 -overlap 1 \
--out outputs/peptideList.csv ```
+-out outputs/peptideList.csv
+```
 
