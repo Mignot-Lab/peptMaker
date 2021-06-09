@@ -1,2 +1,4 @@
-*xlsx
-*pptx
+*.xlsx
+*.pptx
+data/YKPDVDLSK.csv
+data/tauIsoforms.fasta
