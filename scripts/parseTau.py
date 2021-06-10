@@ -3,6 +3,7 @@ import csv
 import os
 import re
 from collections import defaultdict
+from itertools import combinations
 
 from Bio import SeqIO
 
@@ -60,7 +61,10 @@ def makePeptides(posDict, mer, overlap, out, Seq):
                     ptmOut=[i for i in posDict.get(key)]
                     combPTM.extend(ptmOut)
                     ptms='|'.join(ptmOut)
-                    ptmList.append('{} {}'.format(str(j), ptms))
+                    if ptms:
+                        ptmList.append('{}'.format(ptms))
+                    else:
+                        ptmList.append('{}'.format(str('')))
                 else:
                     ptmList.append('{}'.format(str('')))
             print(ptmList) 
@@ -68,31 +72,92 @@ def makePeptides(posDict, mer, overlap, out, Seq):
             outFile.write('{},{},{},'.format(kmer, startPos, endPos))
             if combPTM: ##calculate combinations needed 
                 combins = len(combPTM)
-                totalN=combins*combins
-                totalN += 1
+                totalN=(combins*combins)
                 combTrac += totalN
                 outFile.write(','.join(ptmList)+',{}\n'.format(totalN))
             else:
                 outFile.write(','.join(ptmList)+',{}\n'.format(1))
+                #combTrac += 1
     outFile.close()
     print('OUT WRITTEN {} WITH TOTAL COMB {}'.format(out, combTrac))      
 
 
+##create combination vector
+#kmer = list('SLPTPPTREPK')
+def combPeptides(posList, kmer):
+    #posList = ['', '', '', '', '', 'Gly|N6-acK', 'N6-acK', '', '', '', '']
+    #kmer = ['P', 'G', 'G', 'G', 'N', 'K', 'K', 'I', 'E', 'T', 'H'] 
+    print(posList, kmer)
+    posDict=[]
+    for n, pos in enumerate(posList):
+        if pos:
+            for ptm in pos.split('|'):
+                posDict.append((ptm, n))
+    nComb = len(posDict)+1
+    posIndex = []
+    outKmer = set()
+    for i in range(1, nComb):
+        for sub in combinations(posDict, i): 
+            #print(sub)
+            kmerCp = kmer.copy()
+            posIndex.append(sub)
+            for item in sub:
+                ptm, pos = item
+                #print(ptm, pos)
+                makePTM=kmerCp[pos]
+                if not re.search("\\[", makePTM): #if a ptm has already been assigned at the same position do nothing
+                    motif='{}[{}]'.format(makePTM, ptm)
+                    kmerCp[pos] = motif
+            outKmer.add(''.join(kmerCp))
+    print('BUILT {} COMBINATIONS'.format(len(outKmer)))
+    return outKmer
+
+
+def makePeptidelist(out):
+    pepOut=open('{}_PEPLIST.csv'.format(out), 'w')
+    writer = csv.writer(pepOut)
+    writer.writerow(['PEP', 'START', 'END', 'BASE'])
+    with open(out, 'r') as pepFile:
+        reader = csv.reader(pepFile)
+        next(reader)
+        for row in reader:
+            pep, st, end= row[:3]
+            writer.writerow([pep, st, end, '*'])
+            ptmCheck = '\t'.join(row[3:14])
+            if ptmCheck:
+                ptmList = row[3:14]
+                print('MAKING PTM COMBINATIONS {} FOR {}'.format(ptmCheck, pep))### implement bool check for ptms here ?
+                kmer = list(pep)
+                outKmer = combPeptides(posList=ptmList, kmer=kmer)
+                for pep in outKmer:
+                    writer.writerow([pep, st, end, ''])
+    print('FINISHED WRITE TO {}'.format(pepOut))
+    pepOut.close()
+
+#makePeptidelist(out='outputs/peptideList.csv')
+
+#"-ptm", "data/PTMList_DANIEL.txt"
 def main():
     parser = argparse.ArgumentParser('A script to make user defined peptide mers with an option for overlap, additionally tag ptms')
     parser.add_argument('-fasta', required=True, help='FASTA file of protein sequence to be processed')
-    parser.add_argument('-ptm', required=True, help='A tab delimited PTM list should have pos aminoacid and ptm as first three columns')
+    parser.add_argument('-ptm', required=False, help='A tab delimited PTM list should have pos aminoacid and ptm as first three columns')
     parser.add_argument('-mer', required=True, help='total length of the kmer', type=int)
     parser.add_argument('-overlap', required=True, help='overlap needed', type=int)
     parser.add_argument('-out', required=True, help='file to write output')
     args = parser.parse_args()
+    print(args)
     fasta = args.fasta
-    ptm = args.ptm
     mer = args.mer
     overlap = args.overlap
     out = args.out
-    posDict, Seq = parseFasta(fasta)
-    posDict=parsePTMs(posDict=posDict, ptm=ptm)
-    makePeptides(posDict, mer, overlap, out, Seq)
+    if args.ptm is not None:
+        ptm = args.ptm
+        posDict, Seq = parseFasta(fasta)
+        posDict=parsePTMs(posDict=posDict, ptm=ptm)
+        makePeptides(posDict, mer, overlap, out, Seq)
+        makePeptidelist(out)
+    else:
+        posDict, Seq = parseFasta(fasta)
+        makePeptides(posDict, mer, overlap, out, Seq)
 
 if __name__ == '__main__':main()
