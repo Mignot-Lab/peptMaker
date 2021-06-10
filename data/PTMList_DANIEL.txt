@@ -133,7 +133,6 @@ POS	AA	PTM	OTHER	SOURCE	FREQ
 700	K	N6-acK		DD	-
 702	K	N6-acK		DD	-
 712	K	N6-acK		DD	-
-755	K	N6-acK		DD	-
 46	S	pSer		DD	-
 56	S	pSer		DD	-
 61	S	pSer		DD	-
@@ -211,17 +210,15 @@ POS	AA	PTM	OTHER	SOURCE	FREQ
 730	S	pSer		DD	-
 733	S	pSer		DD	-
 739	S	pSer		DD	-
-750	S	pSer		DD	-
-752	S	pSer		DD	-
-67	K	pSer	-	Wessling_et_al	14.29-0
-274	K	pSer	-	Wessling_et_al	16.33-0
-347	K	pSer	-	Wessling_et_al	2.04-0
-375	K	pSer	-	Wessling_et_al	12.24-0
-274	K	pSer	-	Wessling_et_al	34.69-0
-67	K	pSer	-	Wessling_et_al	0-2.33
-30	T	pSer	-	Wessling_et_al	6.12-0
-29	Y	pSer	-	Wessling_et_al	6.12-0
-39	T	pSer	-	Wessling_et_al	2.04-0
+67	K	N6-acK	-	Wessling_et_al	14.29-0
+274	K	N6-acK	-	Wessling_et_al	16.33-0
+347	K	N6-acK	-	Wessling_et_al	2.04-0
+375	K	N6-acK	-	Wessling_et_al	12.24-0
+274	K	Gly	-	Wessling_et_al	34.69-0
+67	K	K-Methyl	-	Wessling_et_al	0-2.33
+30	T	pThr	-	Wessling_et_al	6.12-0
+29	Y	pTyr	-	Wessling_et_al	6.12-0
+39	T	pThr	-	Wessling_et_al	2.04-0
 46	S	pSer	-	Wessling_et_al	6.12-2.33
 61	S	pSer	-	Wessling_et_al	2.04-0
 64	S	pSer	-	Wessling_et_al	2.04-0
@@ -236,7 +233,7 @@ POS	AA	PTM	OTHER	SOURCE	FREQ
 113	S	pSer	-	Wessling_et_al	20.41-0
 111	T	pThr	-	Wessling_et_al	2.04-0
 113	S	pSer	-	Wessling_et_al	2.04-0
-111	T	pSer	-	Wessling_et_al	10.2-0
+111	T	pThr	-	Wessling_et_al	10.2-0
 113	S	pSer	-	Wessling_et_al	8.16-0
 113	S	pSer	-	Wessling_et_al	26.53-2.33
 113	S	pSer	-	Wessling_et_al	6.12-0
@@ -245,4 +242,4 @@ POS	AA	PTM	OTHER	SOURCE	FREQ
 238	S	pSer	-	Wessling_et_al	6.12-0
 396	S	pSer	-	Wessling_et_al	81.63-11.63
 400	S	pSer	-	Wessling_et_al	83.67-25.58
-403	T	pSer	-	Wessling_et_al	79.59-46.51
+403	T	pThr	-	Wessling_et_al	79.59-46.51

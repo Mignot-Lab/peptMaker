@@ -41,7 +41,7 @@ def makePeptides(posDict, mer, overlap, out, Seq):
     combTrac = 0
     pepLen = mer
     span = pepLen-overlap
-    outFile = open(out, 'w')
+    outFile = open(out+'.csv', 'w')
     header = ['{}Mer'.format(pepLen), 'Start', 'End']
     header.extend(['P{}'.format(i) for i in range(1, pepLen+1)])
     header.extend(['NCombinations'])
