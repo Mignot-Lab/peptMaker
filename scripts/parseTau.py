@@ -117,7 +117,7 @@ def makePeptidelist(out):
     pepOut=open('{}_PEPLIST.csv'.format(out), 'w')
     writer = csv.writer(pepOut)
     writer.writerow(['PEP', 'START', 'END', 'BASE'])
-    with open(out, 'r') as pepFile:
+    with open(out+'.csv') as pepFile:
         reader = csv.reader(pepFile)
         next(reader)
         for row in reader:
