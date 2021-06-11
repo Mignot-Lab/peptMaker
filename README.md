@@ -10,7 +10,7 @@ A typical usage would be with following arguments.\
 
 A example usage would be 
 ```
-python3 scripts/parseTau.py \
+python3 scripts/parseProt.py \
 -fasta data/tauMain.fasta \
 -ptm data/PTMList_DANIEL.txt \
 -mer 11 \
