@@ -67,8 +67,8 @@ def makePeptides(posDict, mer, overlap, out, Seq):
                         ptmList.append('{}'.format(str('')))
                 else:
                     ptmList.append('{}'.format(str('')))
-            print(ptmList) 
-            print(combPTM)
+            #print(ptmList) 
+            #print(combPTM)
             outFile.write('{},{},{},'.format(kmer, startPos, endPos))
             if combPTM: ##calculate combinations needed 
                 combins = len(combPTM)
@@ -87,7 +87,7 @@ def makePeptides(posDict, mer, overlap, out, Seq):
 def combPeptides(posList, kmer):
     #posList = ['', '', '', '', '', 'Gly|N6-acK', 'N6-acK', '', '', '', '']
     #kmer = ['P', 'G', 'G', 'G', 'N', 'K', 'K', 'I', 'E', 'T', 'H'] 
-    print(posList, kmer)
+    #print(posList, kmer)
     posDict=[]
     for n, pos in enumerate(posList):
         if pos:
@@ -109,7 +109,6 @@ def combPeptides(posList, kmer):
                     motif='{}[{}]'.format(makePTM, ptm)
                     kmerCp[pos] = motif
             outKmer.add(''.join(kmerCp))
-    print('BUILT {} COMBINATIONS'.format(len(outKmer)))
     return outKmer
 
 
@@ -117,20 +116,24 @@ def makePeptidelist(out):
     pepOut=open('{}_PEPLIST.csv'.format(out), 'w')
     writer = csv.writer(pepOut)
     writer.writerow(['PEP', 'START', 'END', 'BASE'])
+    nComb =0
     with open(out+'.csv') as pepFile:
         reader = csv.reader(pepFile)
         next(reader)
         for row in reader:
             pep, st, end= row[:3]
+            nComb += 1
             writer.writerow([pep, st, end, '*'])
             ptmCheck = '\t'.join(row[3:14])
             if ptmCheck:
                 ptmList = row[3:14]
-                print('MAKING PTM COMBINATIONS {} FOR {}'.format(ptmCheck, pep))### implement bool check for ptms here ?
+                print('MAKING PTM COMBINATIONS {}'.format(pep))### implement bool check for ptms here ?
                 kmer = list(pep)
                 outKmer = combPeptides(posList=ptmList, kmer=kmer)
+                nComb += len(outKmer)
                 for pep in outKmer:
                     writer.writerow([pep, st, end, ''])
+    print('BUILT {} COMBINATIONS'.format(nComb))
     print('FINISHED WRITE TO {}'.format(pepOut))
     pepOut.close()
 
