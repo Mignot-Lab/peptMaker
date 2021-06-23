@@ -13,16 +13,20 @@ from collections import defaultdict, Counter
 # 'outputs/0N3R_Tau-Fetal_15mer_11overlap_PTM_PEPLIST.csv',
 # 'outputs/Tau-G_15mer_11overlap_PTM_PEPLIST.csv',
 # 'outputs/Canonical_15mer_11overlap_PTM_PEPLIST.csv']
+## EM SUGGESTED TO ONLY HAVE 2 iso
 fileList = [
-'outputs/1N4R_Tau-E_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/0N4R_Tau-D_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/2N3R_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/Tau-A_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/1N3R_Tau-B_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/2N4R_Tau-F_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/0N3R_Tau-Fetal_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/Tau-G_11mer_10overlap_PTM_PEPLIST.csv',
-'outputs/Canonical_11mer_10overlap_PTM_PEPLIST.csv']
+'outputs/2N3R_15mer_11overlap_PTM_PEPLIST.csv',
+'outputs/2N4R_Tau-F_15mer_11overlap_PTM_PEPLIST.csv']
+# fileList = [
+# 'outputs/1N4R_Tau-E_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/0N4R_Tau-D_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/2N3R_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/Tau-A_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/1N3R_Tau-B_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/2N4R_Tau-F_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/0N3R_Tau-Fetal_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/Tau-G_11mer_10overlap_PTM_PEPLIST.csv',
+# 'outputs/Canonical_11mer_10overlap_PTM_PEPLIST.csv']
 peptideDict = defaultdict(set)
 peptideCounter = Counter()
 for file_ in fileList:
@@ -38,6 +42,24 @@ for file_ in fileList:
             peptideCounter[fNameClean] += 1
             peptideDict[row[0]].add(fNameClean)
 
+## write out the peptide list
+pepOut =open('outputs/TAU_PEPTIDE_LIST_JUN23_2021.csv', 'w')
+writer = csv.writer(pepOut)
+headerR = ['PEPTIDE', 'PROTEIN', 'PTMsNo', 'PTMs']
+writer.writerow(headerR)
+for pep, protSet in peptideDict.items():
+    prots = [i for i in protSet]
+    protCat = '|'.join(prots)
+    if re.search("\[(.*?)]", pep):
+        ptms = re.findall("\[(.*?)]", pep)
+        ptmN = len(ptms)
+        ptmCat = '|'.join(ptms)
+    else:
+        ptmN = ''
+        ptmCat = ''
+    row = [pep, protCat, ptmN, ptmCat]
+    writer.writerow(row)
+pepOut.close()   
 ##make n*m matrix
 nMatrixCounter = Counter()
 isoList = set()
